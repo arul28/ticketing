@@ -1,14 +1,68 @@
-<h1>AdminDashboard</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-box {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <hr>
+        <div class="profile-box">
+            <h2>Admin Profile</h2>
+            <p><strong>Username:</strong> <%= @admin.username %></p>
+            <p><strong>Name:</strong> <%= @admin.name %></p>
+            <p><strong>Email:</strong> <%= @admin.email %></p>
+            <p><strong>Phone Number:</strong> <%= @admin.phone_number %></p>
+            <p><strong>Address:</strong> <%= @admin.address %></p>
+            <p><strong>Credit Number:</strong> <%= @admin.credit_number %></p>
+        </div>
+        <%= link_to 'Edit Profile', edit_admin_path(@admin), class: 'btn btn-primary' %>
+        <br><br>
 
-<h2>Admin Profile</h2>
-<p>Username: <%= @admin.username %></p>
-<p>Name: <%= @admin.name %></p>
-<p>Email: <%= @admin.email %></p>
+        <div class="actions-box">
+          <%= link_to 'Passengers', passengers_path, class: 'btn btn-secondary' %>
+          <%= link_to 'Trains', trains_path, class: 'btn btn-secondary' %>
+          <%= link_to 'Tickets', tickets_path, class: 'btn btn-secondary' %>
+          <%= link_to 'Reviews', reviews_path, class: 'btn btn-secondary' %>
+        </div>
 
-<%= link_to 'Edit Profile', edit_admin_path(@admin) %>
-
-<% if session[:admin_id] && Admin.exists?(session[:admin_id]) %>
-  <%= form_with url: logout_path, method: :delete do %>
-    <%= submit_tag 'Logout', class: 'btn btn-danger' %>
-  <% end %>
-<% end %>
+        <% if session[:admin_id] && Admin.exists?(session[:admin_id]) %>
+            <%= form_with url: logout_path, method: :delete do %>
+                <%= submit_tag 'Logout', class: 'btn btn-danger' %>
+            <% end %>
+        <% end %>
+    </div>
+</body>
+</html>

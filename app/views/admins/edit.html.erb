@@ -1,15 +1,74 @@
-<h1>Editing admin</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Admin Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-box {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Admin Profile</h1>
+        <hr>
+        <div class="profile-box">
+            <%= form_for @admin do |f| %>
+                <div class="form-group">
+                    <%= f.label :name %>
+                    <%= f.text_field :name, class: 'form-control' %>
+                </div>
 
-<%= render "form", admin: @admin %>
+                <div class="form-group">
+                    <%= f.label :email %>
+                    <%= f.email_field :email, class: 'form-control' %>
+                </div>
 
-<br>
+                <div class="form-group">
+                    <%= f.label :phone_number %>
+                    <%= f.text_field :phone_number, class: 'form-control' %>
+                </div>
 
-<div>
-  <%= link_to "Show this admin", @admin %> |
-  <%= link_to "Back to admins", admins_path %>
-</div>
+                <div class="form-group">
+                    <%= f.label :address %>
+                    <%= f.text_area :address, class: 'form-control' %>
+                </div>
 
-<%= form_for @admin do |f| %>
-  <!-- ... form fields for name, email, etc. ... -->
-  <%= f.submit "Update Profile" %>
-<% end %>
+                <div class="form-group">
+                    <%= f.label :credit_number %>
+                    <%= f.text_field :credit_number, class: 'form-control' %>
+                </div>
+
+                <%= f.submit "Update Profile", class: 'btn btn-primary' %>
+            <% end %>
+        </div>
+    </div>
+</body>
+</html>
