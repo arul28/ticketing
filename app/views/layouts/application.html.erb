@@ -1,3 +1,20 @@
+# <!DOCTYPE html>
+# <html>
+#   <head>
+#     <title>RailTicketing</title>
+#     <meta name="viewport" content="width=device-width,initial-scale=1">
+#     <%= csrf_meta_tags %>
+#     <%= csp_meta_tag %>
+
+#     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+#   </head>
+
+#   <body>
+#     <%= yield %>
+#   </body>
+# </html>
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,6 +27,21 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <nav>
+        <!-- Other navigation links can go here -->
+
+        <% if session[:admin_id] %>
+          <%= link_to "Logout", logout_path, method: :delete %>
+        <% else %>
+          <%= link_to "Admin Login", login_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>
+

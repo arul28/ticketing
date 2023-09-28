@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
+  get 'admin_dashboard/index'
+  get 'landing_page/index'
+  root 'landing_page#index'
+
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+
   resources :reviews
   resources :passengers
   resources :tickets
   resources :trains
   resources :admins
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
 end
