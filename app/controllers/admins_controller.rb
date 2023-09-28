@@ -8,6 +8,7 @@ class AdminsController < ApplicationController
 
   # GET /admins/1 or /admins/1.json
   def show
+    @admin = Admin.find(session[:admin_id])
   end
 
   # GET /admins/new
@@ -17,6 +18,7 @@ class AdminsController < ApplicationController
 
   # GET /admins/1/edit
   def edit
+    @admin = Admin.find(session[:admin_id])
   end
 
   # POST /admins or /admins.json
@@ -36,14 +38,11 @@ class AdminsController < ApplicationController
 
   # PATCH/PUT /admins/1 or /admins/1.json
   def update
-    respond_to do |format|
-      if @admin.update(admin_params)
-        format.html { redirect_to admin_url(@admin), notice: "Admin was successfully updated." }
-        format.json { render :show, status: :ok, location: @admin }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @admin.errors, status: :unprocessable_entity }
-      end
+    @admin = Admin.find(session[:admin_id])
+    if @admin.update(admin_params)
+      redirect_to admin_dashboard_index_path, notice: 'Profile updated successfully!'
+    else
+      render :edit
     end
   end
 

@@ -8,3 +8,8 @@
   <%= link_to "Show this admin", @admin %> |
   <%= link_to "Back to admins", admins_path %>
 </div>
+
+<%= form_for @admin do |f| %>
+  <!-- ... form fields for name, email, etc. ... -->
+  <%= f.submit "Update Profile" %>
+<% end %>

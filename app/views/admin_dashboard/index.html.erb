@@ -1,2 +1,14 @@
-<h1>AdminDashboard#index</h1>
-<p>Find me in app/views/admin_dashboard/index.html.erb</p>
+<h1>AdminDashboard</h1>
+
+<h2>Admin Profile</h2>
+<p>Username: <%= @admin.username %></p>
+<p>Name: <%= @admin.name %></p>
+<p>Email: <%= @admin.email %></p>
+
+<%= link_to 'Edit Profile', edit_admin_path(@admin) %>
+
+<% if session[:admin_id] && Admin.exists?(session[:admin_id]) %>
+  <%= form_with url: logout_path, method: :delete do %>
+    <%= submit_tag 'Logout', class: 'btn btn-danger' %>
+  <% end %>
+<% end %>
