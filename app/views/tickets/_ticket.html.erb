@@ -1,7 +1,21 @@
 <div id="<%= dom_id ticket %>">
   <p>
-    <strong>Confirmation number:</strong>
+    <strong>Confirmation Number:</strong>
     <%= ticket.confirmation_number %>
+  </p>
+  <p>
+    <strong>Departure Date:</strong>
+    <%= ticket.train.departure_date %>
+  </p>
+
+ <p>
+    <strong>Departure Station:</strong>
+    <%= ticket.train.departure_station %>
+  </p>
+
+ <p>
+    <strong>Termination Station:</strong>
+    <%= ticket.train.termination_station %>
   </p>
 
 </div>

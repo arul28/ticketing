@@ -3,7 +3,10 @@
     <strong>Train number:</strong>
     <%= train.train_number %>
   </p>
-
+  <p>
+    <strong>Rating:</strong>
+    <%= train.rating %>
+  </p>
   <p>
     <strong>Departure station:</strong>
     <%= train.departure_station %>
@@ -21,7 +24,7 @@
 
   <p>
     <strong>Departure time:</strong>
-    <%= train.departure_time %>
+    <%= train.departure_time.strftime("%H:%M:%S") %>
   </p>
 
   <p>
@@ -31,7 +34,7 @@
 
   <p>
     <strong>Arrival time:</strong>
-    <%= train.arrival_time %>
+    <%= train.arrival_time.strftime("%H:%M:%S") %>
   </p>
 
   <p>
@@ -48,5 +51,7 @@
     <strong>Number of seats left:</strong>
     <%= train.number_of_seats_left %>
   </p>
-
+    <% if train.number_of_seats_left > 0 %>
+      <%= link_to "Book", new_ticket_path(train_id: train.id, passenger_id: session[:user_id], ticket_price: train.ticket_price, departure_date: train.departure_date, departure_station: train.departure_station, termination_station: train.termination_station), class: 'btn btn-primary' %>
+    <% end %>
 </div>

@@ -6,5 +6,7 @@
   <%= link_to "Edit this passenger", edit_passenger_path(@passenger) %> |
   <%= link_to "Back to passengers", passengers_path %>
 
-  <%= button_to "Destroy this passenger", @passenger, method: :delete %>
+  <% if session[:role] == "admin"%>
+    <%= button_to "Destroy this passenger", @passenger, method: :delete %>
+  <% end%>
 </div>

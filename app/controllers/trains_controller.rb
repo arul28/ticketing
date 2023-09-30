@@ -3,8 +3,16 @@ class TrainsController < ApplicationController
 
   # GET /trains or /trains.json
   def index
+    @departure_stations = Train.select(:departure_station).distinct.pluck(:departure_station)
+    @termination_stations = Train.select(:termination_station).distinct.pluck(:termination_station)
+    @departure_dates = Train.select(:departure_date).distinct.pluck(:departure_date)
+
     @trains = Train.all
+    @trains = @trains.where(departure_station: params[:departure_station]) if params[:departure_station].present?
+    @trains = @trains.where(termination_station: params[:termination_station]) if params[:termination_station].present?
+    @trains = @trains.where(departure_date: params[:departure_date]) if params[:departure_date].present?
   end
+  
 
   # GET /trains/1 or /trains/1.json
   def show

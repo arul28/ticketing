@@ -1,11 +1,11 @@
-<%= form_with(model: passenger) do |form| %>
-  <% if passenger.errors.any? %>
+<%= form_with(model: passenger || Passenger.new) do |form| %>
+  <% if passenger&.errors&.any? %>
     <div style="color: red">
       <h2><%= pluralize(passenger.errors.count, "error") %> prohibited this passenger from being saved:</h2>
 
       <ul>
-        <% passenger.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% passenger.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>

@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   # GET /reviews or /reviews.json
   def index
-    @reviews = Review.all
+    @reviews = Review.includes(:passenger).all
   end
 
   # GET /reviews/1 or /reviews/1.json
@@ -12,7 +12,12 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/new
   def new
-    @review = Review.new
+    @review = Review.find_by(passenger_id: params[:passenger_id], train_id: params[:train_id])
+    if @review
+      redirect_to review_url(@review)
+    else
+      @review = Review.new
+    end
   end
 
   # GET /reviews/1/edit
@@ -22,11 +27,21 @@ class ReviewsController < ApplicationController
   # POST /reviews or /reviews.json
   def create
     @review = Review.new(review_params)
-
+    @train = Train.find(@review.train_id)
+    count = Review.where(train_id: @review.train_id).count
+    new_rating = @review.rating
+    if count > 0
+      new_rating = ((@train.rating*count) + @review.rating)/(count+1)
+    end
     respond_to do |format|
       if @review.save
-        format.html { redirect_to review_url(@review), notice: "Review was successfully created." }
-        format.json { render :show, status: :created, location: @review }
+        if @train.update(rating: new_rating)
+          format.html { redirect_to review_url(@review), notice: "Review was successfully created." }
+          format.json { render :show, status: :created, location: @review }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @review.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @review.errors, status: :unprocessable_entity }
@@ -36,10 +51,18 @@ class ReviewsController < ApplicationController
 
   # PATCH/PUT /reviews/1 or /reviews/1.json
   def update
+    @train = Train.find(@review.train_id)
+    count = Review.where(train_id: @review.train_id).count
+    new_rating = ((count*@train.rating - @review.rating + review_params[:rating].to_i)/count)
     respond_to do |format|
-      if @review.update(review_params)
-        format.html { redirect_to review_url(@review), notice: "Review was successfully updated." }
-        format.json { render :show, status: :ok, location: @review }
+      if @review.update(feedback: review_params[:feedback], rating: review_params[:rating])
+        if @train.update(rating: new_rating)
+          format.html { redirect_to review_url(@review), notice: "Review was successfully created." }
+          format.json { render :show, status: :created, location: @review }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @review.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @review.errors, status: :unprocessable_entity }
@@ -49,11 +72,19 @@ class ReviewsController < ApplicationController
 
   # DELETE /reviews/1 or /reviews/1.json
   def destroy
+    @train = Train.find(@review.train_id)
+    count = Review.where(train_id: @review.train_id).count
+    new_rating = ((count*@train.rating - @review.rating)/(count-1))
     @review.destroy
-
+    
     respond_to do |format|
-      format.html { redirect_to reviews_url, notice: "Review was successfully destroyed." }
-      format.json { head :no_content }
+      if @train.update(rating: new_rating)
+        format.html { redirect_to reviews_url, notice: "Review was successfully destroyed." }
+        format.json { render :show, status: :created, location: @review }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @review.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -65,6 +96,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def review_params
-      params.require(:review).permit(:rating, :feedback)
+      params.require(:review).permit(:rating, :feedback, :train_id, :passenger_id)
     end
 end

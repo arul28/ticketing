@@ -3,7 +3,11 @@ class TicketsController < ApplicationController
 
   # GET /tickets or /tickets.json
   def index
-    @tickets = Ticket.all
+    if session[:role] == "user"
+      @tickets = Ticket.includes(:train).where(passenger_id: session[:user_id])
+    else
+      @tickets = Ticket.includes(:train).all
+    end
   end
 
   # GET /tickets/1 or /tickets/1.json
@@ -22,11 +26,22 @@ class TicketsController < ApplicationController
   # POST /tickets or /tickets.json
   def create
     @ticket = Ticket.new(ticket_params)
-
+    @train = Train.find(@ticket.train_id)
+    if @train.number_of_seats_left < 0
+      format.html { redirect_to trains_url, notice: "No more seats left" }
+      format.json { head :no_content }
+      return
+    end
     respond_to do |format|
       if @ticket.save
-        format.html { redirect_to ticket_url(@ticket), notice: "Ticket was successfully created." }
-        format.json { render :show, status: :created, location: @ticket }
+        seats_left = @train.number_of_seats_left - 1
+        if @train.update(number_of_seats_left: seats_left)
+          format.html { redirect_to ticket_url(@ticket), notice: "Ticket was successfully created." }
+          format.json { render :show, status: :created, location: @ticket }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @ticket.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @ticket.errors, status: :unprocessable_entity }
@@ -60,11 +75,24 @@ class TicketsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket
+      if session[:role] == "user"
+        @ticket = Ticket.find_by(id: params[:id])
+        if @ticket
+          @passenger = Passenger.find_by(id: @ticket.passenger_id)
+          if session[:user_id] != @passenger.id
+            redirect_to passenger_dashboard_index_path
+            return
+          end
+        else
+          redirect_to passenger_dashboard_index_path
+          return
+        end
+      end
       @ticket = Ticket.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def ticket_params
-      params.require(:ticket).permit(:confirmation_number)
+      params.require(:ticket).permit(:confirmation_number, :passenger_id, :train_id)
     end
 end

@@ -20,6 +20,15 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        .admin-profile-box {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-actions {
+  margin-bottom: 20px;
+}
         .btn {
             padding: 10px 15px;
             border: none;
@@ -48,15 +57,14 @@
             <p><strong>Address:</strong> <%= @admin.address %></p>
             <p><strong>Credit Number:</strong> <%= @admin.credit_number %></p>
         </div>
-        <%= link_to 'Edit Profile', edit_admin_path(@admin), class: 'btn btn-primary' %>
-        <br><br>
 
-        <div class="actions-box">
-          <%= link_to 'Passengers', passengers_path, class: 'btn btn-secondary' %>
-          <%= link_to 'Trains', trains_path, class: 'btn btn-secondary' %>
-          <%= link_to 'Tickets', tickets_path, class: 'btn btn-secondary' %>
-          <%= link_to 'Reviews', reviews_path, class: 'btn btn-secondary' %>
-        </div>
+        <div class="admin-actions">
+        <%= link_to 'Edit Profile', edit_admin_path(@admin), class: 'btn btn-primary' %>
+        <%= link_to 'Passengers', passengers_path, class: 'btn btn-secondary' %>
+        <%= link_to 'Trains', trains_path, class: 'btn btn-secondary' %>
+        <%= link_to 'Tickets', tickets_path, class: 'btn btn-secondary' %>
+        <%= link_to 'Reviews', reviews_path, class: 'btn btn-secondary' %>
+      </div>
 
         <% if session[:admin_id] && Admin.exists?(session[:admin_id]) %>
             <%= form_with url: logout_path, method: :delete do %>

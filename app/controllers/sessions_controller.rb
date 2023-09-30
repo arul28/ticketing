@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
     admin = Admin.find_by(username: params[:username])
     if admin && admin.authenticate(params[:password])
       session[:admin_id] = admin.id
+      session[:role] = "admin"
       redirect_to admin_dashboard_index_path, notice: "Logged in successfully!"
     else
       flash.now[:alert] = "Invalid login credentials"

@@ -11,4 +11,6 @@
   <% end %>
 </div>
 
+    <% if session[:role] == "admin" %>
 <%= link_to "New review", new_review_path %>
+<% end %>

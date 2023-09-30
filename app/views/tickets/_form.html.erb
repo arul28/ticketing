@@ -12,8 +12,24 @@
   <% end %>
 
   <div>
-    <%= form.label :confirmation_number, style: "display: block" %>
-    <%= form.number_field :confirmation_number %>
+    Departure Station: <%= params[:departure_station]%>
+  </div>
+  <div>
+    Termination Station: <%= params[:termination_station]%>
+  </div>
+  <div>
+    Departure Date: <%= params[:departure_date]%>
+  </div>
+  <div>
+    Ticket Price: <%= params[:ticket_price]%>
+  </div>
+  <div>
+    <%= form.label :passenger_id, hidden: true %>
+    <%= form.number_field :passenger_id, value: params[:passenger_id], hidden: true %>
+  </div>
+  <div>
+    <%= form.label :train_id, hidden: true %>
+    <%= form.number_field :train_id, value: params[:train_id], hidden: true %>
   </div>
 
   <div>

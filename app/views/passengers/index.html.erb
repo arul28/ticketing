@@ -4,11 +4,18 @@
 
 <div id="passengers">
   <% @passengers.each do |passenger| %>
-    <%= render passenger %>
-    <p>
-      <%= link_to "Show this passenger", passenger %>
-    </p>
+    <div class="passenger-box">
+      <%= render passenger %>
+      <p>
+        <%= link_to "Show this passenger", passenger %>
+      </p>
+    </div>
   <% end %>
 </div>
 
 <%= link_to "New passenger", new_passenger_path %>
+<br></br>
+
+<%= link_to "Trains", trains_path %>
+
+<%= link_to "Trip History"%>

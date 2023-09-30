@@ -8,7 +8,10 @@
     <p>
       <%= link_to "Show this ticket", ticket %>
     </p>
+    <% if Date.today() < ticket.train.arrival_date %>
+      <%= link_to "Review",  new_review_path(passenger_id: ticket.passenger_id, train_id: ticket.train_id)%>
+    <% end %>
   <% end %>
 </div>
 
-<%= link_to "New ticket", new_ticket_path %>
+<br></br>

@@ -22,3 +22,9 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+<ins>ADMIN LOGIN</ins>
+
+Username - user
+
+Password - pwd

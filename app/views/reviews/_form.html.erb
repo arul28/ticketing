@@ -20,6 +20,14 @@
     <%= form.label :feedback, style: "display: block" %>
     <%= form.text_area :feedback %>
   </div>
+   <div>
+    <%= form.label :passenger_id, hidden: true %>
+    <%= form.number_field :passenger_id, value: params[:passenger_id], hidden: true %>
+  </div>
+  <div>
+    <%= form.label :train_id, hidden: true %>
+    <%= form.number_field :train_id, value: params[:train_id], hidden: true %>
+  </div>
 
   <div>
     <%= form.submit %>

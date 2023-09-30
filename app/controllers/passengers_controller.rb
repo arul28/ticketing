@@ -1,8 +1,11 @@
 class PassengersController < ApplicationController
-  before_action :set_passenger, only: %i[ show edit update destroy ]
-
+  before_action :set_passenger, only: %i[ show edit update ]
+  
   # GET /passengers or /passengers.json
   def index
+    if session[:role] == "user"
+      redirect_to passenger_dashboard_index_path
+    end
     @passengers = Passenger.all
   end
 
@@ -50,7 +53,6 @@ class PassengersController < ApplicationController
   # DELETE /passengers/1 or /passengers/1.json
   def destroy
     @passenger.destroy
-
     respond_to do |format|
       format.html { redirect_to passengers_url, notice: "Passenger was successfully destroyed." }
       format.json { head :no_content }
@@ -60,6 +62,12 @@ class PassengersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_passenger
+      if session[:role] == "user"
+        if session[:user_id] != params[:id].to_i
+          redirect_to passenger_dashboard_index_path
+          return
+        end
+      end
       @passenger = Passenger.find(params[:id])
     end
 

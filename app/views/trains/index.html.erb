@@ -2,13 +2,40 @@
 
 <h1>Trains</h1>
 
+<%= form_tag trains_path, method: :get, class: 'filter-form' do %>
+  <div class="form-group">
+    <%= label_tag :departure_station, "Filter by Departure Station" %>
+    <%= select_tag :departure_station, options_for_select([["None", ""]] + @departure_stations.map { |s| [s, s] }, params[:departure_station]), class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :termination_station, "Filter by Termination Station" %>
+    <%= select_tag :termination_station, options_for_select([["None", ""]] + @termination_stations.map { |s| [s, s] }, params[:termination_station]), class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :departure_date, "Filter by Departure Date" %>
+    <%= select_tag :departure_date, options_for_select([["None", ""]] + @departure_dates.map { |s| [s, s] }, params[:departure_date]), class: 'form-control' %>
+  </div>
+
+  <%= submit_tag "Filter", class: 'btn btn-primary' %>
+<% end %>
+
 <div id="trains">
   <% @trains.each do |train| %>
-    <%= render train %>
-    <p>
-      <%= link_to "Show this train", train %>
-    </p>
+    <div class="train-box">
+      <%= render train %>
+      <p>
+        <% if session[:role] == "admin" %>
+        <%= link_to "Show this train", train %>
+        <% end %>
+      </p>
+    </div>
   <% end %>
 </div>
 
+
+<% if session[:role] == "admin" %>
 <%= link_to "New train", new_train_path %>
+<br></br>
+<% end %>
