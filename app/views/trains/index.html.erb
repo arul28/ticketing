@@ -17,8 +17,23 @@
     <%= label_tag :departure_date, "Filter by Departure Date" %>
     <%= select_tag :departure_date, options_for_select([["None", ""]] + @departure_dates.map { |s| [s, s] }, params[:departure_date]), class: 'form-control' %>
   </div>
+  <div class="form-group">
+    <%= label_tag :rating, "Filter by Rating >= 3" %>
+    <%= select_tag :rating, options_for_select([["No", ""]] + @ratings.map { |s| [s, s] }, params[:rating]), class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :upcoming, "Show only upcoming trains" %>
+    <%= select_tag :upcoming, options_for_select([["No", ""]] + @upcoming.map { |s| [s, s] }, params[:upcoming]), class: 'form-control' %>
+  </div>
+<% if session[:role] == "admin" %>
+   <div class="form-group">
+    <%= label_tag :searchf, "Show users who booked train number:" %>
+    <%= select_tag :searchf, options_for_select([["No", ""]] + @searchf.map { |s| [s, s] }, params[:searchf]), class: 'form-control' %>
+  </div>
+<% end %>
 
-  <%= submit_tag "Filter", class: 'btn btn-primary' %>
+
+  <%= submit_tag "Go", class: 'btn btn-primary' %>
 <% end %>
 
 <div id="trains">

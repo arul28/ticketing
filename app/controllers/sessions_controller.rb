@@ -1,5 +1,12 @@
 class SessionsController < ApplicationController
   def new
+    if session[:role].present?
+      if session[:role] == "admin"
+        redirect_to admin_dashboard_index_path
+      else
+        redirect_to passenger_dashboard_index_path
+      end
+    end
   end
 
   def create
@@ -16,6 +23,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:admin_id] = nil
+    session[:role] = nil
     redirect_to root_path, notice: "Logged out successfully!"
   end
 end

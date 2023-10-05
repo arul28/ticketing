@@ -3,7 +3,12 @@ class ReviewsController < ApplicationController
 
   # GET /reviews or /reviews.json
   def index
-    @reviews = Review.includes(:passenger).all
+    @users = Review.includes(:passenger).pluck(:name)
+    @trains = Review.includes(:train).pluck(:train_number)
+    
+    @reviews = Review.includes(:passenger, :train).all
+    @reviews = @reviews.where(passenger: {name: params[:name]}) if params[:name].present?
+    @reviews = @reviews.where(train: {train_number: params[:train_number]}) if params[:train_number].present?
   end
 
   # GET /reviews/1 or /reviews/1.json

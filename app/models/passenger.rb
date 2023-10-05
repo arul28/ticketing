@@ -6,6 +6,7 @@ class Passenger < ApplicationRecord
 
   validates_confirmation_of :password
 
-  has_many :reviews
-  has_many :tickets
+  has_many :reviews, dependent: :destroy
+  has_many :tickets, dependent: :destroy
+  has_many :trains, through: :tickets
 end

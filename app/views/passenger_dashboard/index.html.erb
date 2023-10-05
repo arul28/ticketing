@@ -65,10 +65,14 @@
       </div>
 
         <% if session[:user_id] && Passenger.exists?(session[:user_id]) %>
-            <%= form_with url: logout_path, method: :delete do %>
+            <%= form_with url: userlogout_path, method: :delete do %>
                 <%= submit_tag 'Logout', class: 'btn btn-danger' %>
             <% end %>
         <% end %>
+        <br>
+        <% if session[:user_id] && Passenger.exists?(session[:user_id]) && @passenger.id == session[:user_id] %>
+            <%= button_to "Destroy this passenger", @passenger, method: :delete,  class: 'btn btn-danger' %>
+        <% end%>
     </div>
 </body>
 </html>

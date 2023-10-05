@@ -6,11 +6,21 @@ class TrainsController < ApplicationController
     @departure_stations = Train.select(:departure_station).distinct.pluck(:departure_station)
     @termination_stations = Train.select(:termination_station).distinct.pluck(:termination_station)
     @departure_dates = Train.select(:departure_date).distinct.pluck(:departure_date)
+    @ratings = ["Yes"]
+    @upcoming = ["Yes"]
+    @searchf = Train.pluck(:train_number)
 
     @trains = Train.all
     @trains = @trains.where(departure_station: params[:departure_station]) if params[:departure_station].present?
     @trains = @trains.where(termination_station: params[:termination_station]) if params[:termination_station].present?
     @trains = @trains.where(departure_date: params[:departure_date]) if params[:departure_date].present?
+    @trains = @trains.joins(:reviews).where('reviews.rating >= ?', 3).distinct if params[:rating] == "Yes"
+    @trains = @trains.where('number_of_seats_left > ?', 0).where('departure_date > ?', Date.today()) if params[:upcoming] == "Yes"
+    if params[:searchf].present?
+      @ids = Train.joins(:tickets).includes(:passengers).distinct.pluck("passengers.id")
+      redirect_to passengers_path(id: @ids)
+    end
+   
   end
   
 

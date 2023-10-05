@@ -58,7 +58,7 @@
 
   <div>
     <%= form.label :number_of_seats_left, style: "display: block" %>
-    <%= form.number_field :number_of_seats_left %>
+    <%= form.number_field :number_of_seats_left, min: 0 %>
   </div>
 
   <div>

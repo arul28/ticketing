@@ -12,9 +12,10 @@
   <% end %>
 
   <div>
-    <%= form.label :rating, style: "display: block" %>
-    <%= form.text_field :rating %>
-  </div>
+  <%= form.label :rating, style: "display: block" %>
+  <%= form.select :rating, [1, 2, 3, 4, 5], {}, { class: 'form-control' } %>
+</div>
+
 
   <div>
     <%= form.label :feedback, style: "display: block" %>

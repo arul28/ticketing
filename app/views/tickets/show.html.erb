@@ -3,7 +3,23 @@
 <%= render @ticket %>
 
 <div>
-<% if session[:role] == "admin"%>
+<% if session[:role] == "admin" || session[:user_id] == @ticket.passenger_id || session[:user_id] == @ticket.for_passenger_id%>
+  <% if @ticket.status != "cancelled" %>
+    <%= form_with(model: @ticket) do |form| %>
+      <div>
+        <% @ticket.status = "cancelled"%>
+        <%= form.label :status, hidden: true %>
+        <%= form.text_field :status, value: "cancelled", hidden: true %>
+    </div>
+    <div>
+      <%= form.submit "Cancel Ticket" %>
+    </div>
+    <% end %>
+  <% end %>
+<% end %>
+<br>
+<% if session[:role] == "admin" %>
+
   <%= link_to "Edit this ticket", edit_ticket_path(@ticket) %> |
 <% end %>
   <%= link_to "Back to tickets", tickets_path %>

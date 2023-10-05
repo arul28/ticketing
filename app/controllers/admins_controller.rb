@@ -37,14 +37,22 @@ class AdminsController < ApplicationController
   end
 
   # PATCH/PUT /admins/1 or /admins/1.json
-  def update
-    @admin = Admin.find(session[:admin_id])
-    if @admin.update(admin_params)
-      redirect_to admin_dashboard_index_path, notice: 'Profile updated successfully!'
-    else
-      render :edit
-    end
+def update
+  @admin = Admin.find(session[:admin_id])
+  
+  # Check if the credit card number length is 16
+  if params[:admin][:credit_number].length != 16
+    flash[:error] = "Credit card number must be 16 digits long."
+    render :edit
+    return
   end
+  
+  if @admin.update(admin_params)
+    redirect_to admin_dashboard_index_path, notice: 'Profile updated successfully!'
+  else
+    render :edit
+  end
+end
 
   # DELETE /admins/1 or /admins/1.json
   def destroy

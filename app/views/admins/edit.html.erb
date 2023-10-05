@@ -62,9 +62,16 @@
                 </div>
 
                 <div class="form-group">
-                    <%= f.label :credit_number %>
-                    <%= f.text_field :credit_number, class: 'form-control' %>
-                </div>
+  <%= f.label :credit_number %>
+  <%= f.text_field :credit_number, class: 'form-control' %>
+  <% if @admin.errors[:credit_number].any? %>
+    <div class="alert alert-danger">
+      <% @admin.errors[:credit_number].each do |message| %>
+        <%= message %><br>
+      <% end %>
+    </div>
+  <% end %>
+</div>
 
                 <%= f.submit "Update Profile", class: 'btn btn-primary' %>
             <% end %>

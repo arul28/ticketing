@@ -18,13 +18,10 @@
     <main>
       <%= yield %>
     </main>
-    <% if request.path != passenger_dashboard_index_path%>
-    <% if session[:role] == "admin" %>
-  <%= link_to "Back to Admin Dashboard", login_path, class: 'btn btn-primary' %>
-<% else %>
-  <%= link_to "Back to Passenger Dashboard", passenger_dashboard_index_path, class: 'btn btn-primary' %>
-<% end %>
-<% end %>
+    <% if request.path != root_path && request.path != admin_dashboard_index_path && request.path != passenger_dashboard_index_path %>
+      <%= link_to "Back to Home Page", root_path, class: 'btn btn-primary' %>
+    <% end %>
+
   </body>
 </html>
 

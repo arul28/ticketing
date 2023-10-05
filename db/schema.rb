@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_30_081923) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_01_001135) do
   create_table "admins", force: :cascade do |t|
     t.string "username"
     t.string "name"
@@ -22,6 +22,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_30_081923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
   create_table "passengers", force: :cascade do |t|
@@ -34,6 +39,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_30_081923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.index ["reset_password_token"], name: "index_passengers_on_reset_password_token", unique: true
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -41,12 +51,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_30_081923) do
     t.text "feedback"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "passenger_id", null: false
+    t.integer "train_id", null: false
+    t.index ["passenger_id"], name: "index_reviews_on_passenger_id"
+    t.index ["train_id"], name: "index_reviews_on_train_id"
   end
 
   create_table "tickets", force: :cascade do |t|
     t.integer "confirmation_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "passenger_id", null: false
+    t.integer "train_id", null: false
+    t.string "for_passenger_id"
+    t.string "status"
+    t.index ["passenger_id"], name: "index_tickets_on_passenger_id"
+    t.index ["train_id"], name: "index_tickets_on_train_id"
   end
 
   create_table "trains", force: :cascade do |t|
@@ -65,4 +85,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_30_081923) do
     t.decimal "rating"
   end
 
+  add_foreign_key "reviews", "passengers"
+  add_foreign_key "reviews", "trains"
+  add_foreign_key "tickets", "passengers"
+  add_foreign_key "tickets", "trains"
 end

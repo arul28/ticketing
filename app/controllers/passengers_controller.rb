@@ -7,6 +7,7 @@ class PassengersController < ApplicationController
       redirect_to passenger_dashboard_index_path
     end
     @passengers = Passenger.all
+    @passengers = Passenger.where(id: params[:id]) if params[:id].present?
   end
 
   # GET /passengers/1 or /passengers/1.json
@@ -28,7 +29,7 @@ class PassengersController < ApplicationController
 
     respond_to do |format|
       if @passenger.save
-        format.html { redirect_to passenger_url(@passenger), notice: "Passenger was successfully created." }
+        format.html { redirect_to userlogin_path, notice: "Passenger was successfully created." }
         format.json { render :show, status: :created, location: @passenger }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -52,8 +53,15 @@ class PassengersController < ApplicationController
 
   # DELETE /passengers/1 or /passengers/1.json
   def destroy
+    @passenger = Passenger.find_by(id: params[:id])
     @passenger.destroy
     respond_to do |format|
+      if session[:role] == "user"
+        session[:role] = nil
+        session[:user_id] = nil
+        format.html { redirect_to root_path, notice: "Passenger was successfully destroyed." }
+        format.json { head :no_content }
+      end
       format.html { redirect_to passengers_url, notice: "Passenger was successfully destroyed." }
       format.json { head :no_content }
     end

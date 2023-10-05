@@ -10,29 +10,52 @@
       </ul>
     </div>
   <% end %>
+  <% if params[:status] == "cancelled" %>
+    <div>
+      <%= form.label :status, hidden: true %>
+      <%= form.text_field :status, value: "cancelled", hidden: true %>
+  </div>
+  <% end %>
 
   <div>
-    Departure Station: <%= params[:departure_station]%>
+    Departure Station: <%if params[:departure_station].present?  %> <%= params[:departure_station]%> <% else %> <%= @ticket.train.departure_station %><% end %>
   </div>
   <div>
-    Termination Station: <%= params[:termination_station]%>
+    Termination Station: <%if params[:termination_station].present?  %> <%= params[:termination_station]%> <% else %> <%= @ticket.train.termination_station %><% end %>
+  <div>
+    Departure Date: <%if params[:departure_date].present?  %> <%= params[:departure_date]%> <% else %> <%= @ticket.train.departure_date %><% end %>
   </div>
   <div>
-    Departure Date: <%= params[:departure_date]%>
+    Ticket Price: <%if params[:ticket_price].present?  %> <%= params[:ticket_price]%> <% else %> <%= @ticket.train.ticket_price %><% end %>
   </div>
   <div>
-    Ticket Price: <%= params[:ticket_price]%>
+    <% if session[:role] != "admin" %>
+      <%= form.label :for_passenger_id %>
+      <%= form.select :for_passenger_id, options_for_select(["", ""] + @passengers.map { |s| [s[0], s[1]] }, params[:for_passenger_id]) %>
+    <% else %>
+      <%= form.label :for_passenger_id, hidden: true %>
+      <%= form.text_field :for_passenger_id, value: "admin", hidden: true %>
+    <% end%>
   </div>
   <div>
-    <%= form.label :passenger_id, hidden: true %>
-    <%= form.number_field :passenger_id, value: params[:passenger_id], hidden: true %>
+    <% if session[:role] == "admin" %>
+    For Passenger:
+     <%= form.label :passenger_id, hidden: true %>
+      <%= form.select :passenger_id, options_for_select(["", ""] + @passengers.map { |s| [s[0], s[1]] }, params[:passenger_id]) %>
+    <% else %>
+      <%= form.label :passenger_id, hidden: true %>
+      <%= form.number_field :passenger_id, value: session[:user_id], hidden: true %>
+    <% end %>
   </div>
   <div>
     <%= form.label :train_id, hidden: true %>
     <%= form.number_field :train_id, value: params[:train_id], hidden: true %>
   </div>
-
   <div>
-    <%= form.submit %>
+    <%= form.label :status, hidden: true %>
+    <%= form.text_field :status, value: "booked", hidden: true %>
+  </div>
+  <div>
+    <%= form.submit "Buy Ticket" %>
   </div>
 <% end %>

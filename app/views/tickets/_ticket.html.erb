@@ -18,4 +18,23 @@
     <%= ticket.train.termination_station %>
   </p>
 
+  <p>
+    <strong>Ticket Status:</strong>
+    <%= ticket.status %>
+  </p>
+
+  <p>
+    
+    <% if @passenger%>
+    <strong>Booked By:</strong>
+    <%= @passenger.name %>
+    <% end %>
+  </p>
+  <p>
+    <% if @for_passenger%>
+    <strong>Booked For:</strong>
+    <%= @for_passenger.name %>
+    <% end %>
+  </p>
+
 </div>

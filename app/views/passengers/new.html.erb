@@ -5,5 +5,7 @@
 <br>
 
 <div>
+  <% if session[:role] == "admin" %>
   <%= link_to "Back to passengers", passengers_path %>
+  <% end %>
 </div>
